@@ -1,7 +1,6 @@
-// --- ระบบรวม: คลิกเพื่อเริ่ม, สุ่มหัวใจ, หัวใจตามเมาส์, และสุ่มรูปภาพ 3 แบบ ---
+// --- ระบบรวม: คลิกเพื่อเริ่ม, สุ่มหัวใจ, หัวใจตามเมาส์, และสุ่มรูปภาพ 3 แบบ (แก้ไขแล้ว) ---
 
 // 💡 1. ตั้งค่าหลัก
-// ✨ แก้ชื่อไฟล์รูปภาพทั้ง 3 รูปของคุณตรงนี้ ✨
 const SPECIAL_IMAGE_URLS = [
     'https://uwuxp.github.io/Flower4U/secret_1.png', 
     'https://uwuxp.github.io/Flower4U/secret_2.png', 
@@ -49,15 +48,14 @@ function createCursorHeart(x, y) {
     heart.addEventListener('animationend', () => heart.remove());
 }
 
-// 💡 4. ฟังก์ชันสร้าง "รูปภาพพิเศษ" (อัปเดตให้สุ่มจาก 3 รูป)
+// 💡 4. ฟังก์ชันสร้าง "รูปภาพพิเศษ" (สำหรับเมาส์เท่านั้น)
 function createSpecialImage(x, y) {
-    // ✨ เวทมนตร์อยู่ตรงนี้: สุ่มเลือก URL รูปภาพจากใน Array ✨
     const randomIndex = Math.floor(Math.random() * SPECIAL_IMAGE_URLS.length);
     const randomImageUrl = SPECIAL_IMAGE_URLS[randomIndex];
 
     const img = document.createElement('div');
     img.classList.add('special-image');
-    img.style.backgroundImage = `url(${randomImageUrl})`; // ใช้ URL ที่สุ่มได้
+    img.style.backgroundImage = `url(${randomImageUrl})`;
 
     img.style.left = x + 'px';
     img.style.top = y + 'px';
@@ -81,7 +79,6 @@ function handlePointerMove(e) {
     const x = e.touches ? e.touches[0].clientX : e.clientX;
     const y = e.touches ? e.touches[0].clientY : e.clientY;
 
-    // สุ่มตัวเลข 0-1 ถ้าได้น้อยกว่า 0.1 (10%) ให้สร้างรูปภาพ
     if (Math.random() < SPAWN_CHANCE) {
         createSpecialImage(x, y);
     } else {
@@ -93,16 +90,37 @@ function handlePointerMove(e) {
 function startExperience() {
     document.body.classList.remove("not-loaded");
 
+    // ✨✨✨ แก้ไขตรรกะทั้งหมดตรงนี้ ✨✨✨
     // สำหรับหัวใจ/รูปภาพพื้นหลัง
     setInterval(() => {
         if (Math.random() < SPAWN_CHANCE) {
-            const randomX = Math.random() * window.innerWidth;
-            const randomY = window.innerHeight + 50;
-            createSpecialImage(randomX, randomY);
+            // ถ้าสุ่มได้รูปพิเศษ: สร้าง div ใหม่ที่ "หน้าตา" เหมือน special-image แต่ "พฤติกรรม" เหมือน heart
+            const img = document.createElement('div');
+            
+            // 👈 **เคล็ดลับคือเพิ่มคลาส 'heart' เข้าไปด้วย!**
+            // เพื่อให้มันใช้อนิเมชัน floatUp ที่ลอยขึ้นสูงๆ
+            img.classList.add('special-image', 'heart'); 
+
+            // สุ่มรูปจากใน List
+            const randomIndex = Math.floor(Math.random() * SPECIAL_IMAGE_URLS.length);
+            img.style.backgroundImage = `url(${SPECIAL_IMAGE_URLS[randomIndex]})`;
+
+            // กำหนดค่าต่างๆ ให้เหมือนกับหัวใจพื้นหลัง
+            img.style.left = Math.random() * 100 + 'vw';
+            img.style.top = '100vh';
+            const imgSize = Math.random() * 40 + 40; // ขนาดรูปพิเศษ
+            img.style.width = imgSize + 'px';
+            img.style.height = imgSize + 'px';
+            img.style.animationDuration = `${Math.random() * 5 + 7}s`; // ใช้เวลานานเหมือนหัวใจ
+
+            document.body.appendChild(img);
+            img.addEventListener('animationend', () => img.remove());
+
         } else {
+            // ถ้าสุ่มไม่โดน ก็สร้างหัวใจปกติ
             createRandomHeart();
         }
-    }, 500);
+    }, 500); // ความถี่ของหัวใจ/รูปภาพพื้นหลัง
 
     // เริ่มระบบติดตามเมาส์/นิ้ว
     document.addEventListener('mousemove', handlePointerMove);
