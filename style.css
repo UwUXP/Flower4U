@@ -28,7 +28,7 @@ body {
   justify-content: center;
   min-height: 100vh;
   background-color: var(--dark-color);
-  overflow: hidden;
+  overflow-x: hidden; /* 👈 แก้ปัญหาจอเกินบนมือถือ */
   perspective: 1000px;
 }
 
@@ -58,65 +58,54 @@ body {
   --fl-speed: 0.8s;
 }
 
-/* 🌸 START: โค้ดที่รื้อใหม่ทั้งหมด 🌸 */
+/* 🌸 START: โค้ดที่รื้อใหม่ทั้งหมดสำหรับ 6 ดอก 🌸 */
 /* --- การจัดตำแหน่งและอนิเมชันของดอกไม้แต่ละดอก --- */
-.flower--1 { /* กลางสูง */
+.flower--1 { /* กลางหลัง สูงสุด */
   left: 48%; 
-  transform: rotate(-5deg);
+  transform: rotate(-2deg);
   animation: moving-flower-1 5s linear infinite;
 }
-.flower--2 { /* ขวาหน้า */
-  left: 60%; 
-  transform: rotate(15deg);
+.flower--2 { /* ขวา กลาง */
+  left: 65%; 
+  transform: rotate(10deg);
   animation: moving-flower-2 4s linear infinite;
 }
-.flower--3 { /* ซ้ายหน้า */
-  left: 35%;
-  transform: rotate(-15deg);
+.flower--3 { /* ซ้าย กลาง */
+  left: 30%;
+  transform: rotate(-10deg);
   animation: moving-flower-3 4.5s linear infinite;
 }
-.flower--4 { /* ซ้ายสุด */
+.flower--4 { /* ซ้ายสุด หน้า */
   right: 68%;
-  transform: rotate(-25deg);
+  transform: rotate(-20deg);
   animation: moving-flower-1 5.5s linear infinite;
 }
-.flower--5 { /* ขวาสุด */
+.flower--5 { /* ขวาสุด หน้า */
   left: 78%;
-  transform: rotate(35deg);
+  transform: rotate(25deg);
   animation: moving-flower-2 6s linear infinite;
 }
-.flower--6 { /* ซ้ายหลัง */
-  left: 20%;
-  transform: rotate(-10deg);
-  animation: moving-flower-3 5s linear infinite;
-}
-.flower--7 { /* ขวาหลัง */
-  left: 70%;
-  transform: rotate(25deg);
-  animation: moving-flower-1 4.2s linear infinite;
-}
-.flower--8 { /* กลางเตี้ย */
+.flower--6 { /* กลางหน้า เตี้ยสุด */
   left: 45%;
   transform: rotate(5deg);
-  animation: moving-flower-2 3.8s linear infinite;
+  animation: moving-flower-3 3.8s linear infinite;
 }
 
-/* --- การตั้งค่าความสูงและเวลาเกิดของ "ก้าน" (Randomized Height) --- */
+
+/* --- การตั้งค่าความสูงและเวลาเกิดของ "ก้าน" --- */
 .flower--1 .flower__line { height: 70vmin; animation-delay: 0.2s; }
-.flower--2 .flower__line { height: 55vmin; animation-delay: 0.8s; }
-.flower--3 .flower__line { height: 60vmin; animation-delay: 0.5s; }
-.flower--4 .flower__line { height: 50vmin; animation-delay: 1.1s; }
-.flower--5 .flower__line { height: 62vmin; animation-delay: 0.4s; }
-.flower--6 .flower__line { height: 68vmin; animation-delay: 0.7s; }
-.flower--7 .flower__line { height: 48vmin; animation-delay: 1.3s; }
-.flower--8 .flower__line { height: 45vmin; animation-delay: 1.0s; }
+.flower--2 .flower__line { height: 60vmin; animation-delay: 0.8s; }
+.flower--3 .flower__line { height: 62vmin; animation-delay: 0.5s; }
+.flower--4 .flower__line { height: 55vmin; animation-delay: 1.1s; }
+.flower--5 .flower__line { height: 50vmin; animation-delay: 0.4s; }
+.flower--6 .flower__line { height: 45vmin; animation-delay: 1.0s; }
 
 
 /* --- การตั้งค่าเวลาบานของ "ใบ" ที่ติดก้าน --- */
 .flower--1 .flower__line__leaf--1 { animation: blooming-leaf-right var(--fl-speed) 1.6s backwards; }
 .flower--1 .flower__line__leaf--2 { animation: blooming-leaf-right var(--fl-speed) 1.4s backwards; }
 .flower--1 .flower__line__leaf--3 { animation: blooming-leaf-left var(--fl-speed) 1.2s backwards; }
-.flower--1 .flower__line__leaf--4 { animation: blooming-leaf-left var(--fl-speed) 1s backwards; }
+.flower--1 .flower__line__leaf--4 { animation: blooming-leaf-left var(--fl-speed) 1.0s backwards; }
 
 .flower--2 .flower__line__leaf--1 { animation: blooming-leaf-right var(--fl-speed) 1.9s backwards; }
 .flower--2 .flower__line__leaf--2 { animation: blooming-leaf-right var(--fl-speed) 1.7s backwards; }
@@ -143,15 +132,6 @@ body {
 .flower--6 .flower__line__leaf--3 { animation: blooming-leaf-left var(--fl-speed) 2.6s backwards; }
 .flower--6 .flower__line__leaf--4 { animation: blooming-leaf-left var(--fl-speed) 2.8s backwards; }
 
-.flower--7 .flower__line__leaf--1 { animation: blooming-leaf-right var(--fl-speed) 1.8s backwards; }
-.flower--7 .flower__line__leaf--2 { animation: blooming-leaf-right var(--fl-speed) 2.0s backwards; }
-.flower--7 .flower__line__leaf--3 { animation: blooming-leaf-left var(--fl-speed) 2.2s backwards; }
-.flower--7 .flower__line__leaf--4 { animation: blooming-leaf-left var(--fl-speed) 2.4s backwards; }
-
-.flower--8 .flower__line__leaf--1 { animation: blooming-leaf-right var(--fl-speed) 3.0s backwards; }
-.flower--8 .flower__line__leaf--2 { animation: blooming-leaf-right var(--fl-speed) 3.2s backwards; }
-.flower--8 .flower__line__leaf--3 { animation: blooming-leaf-left var(--fl-speed) 3.4s backwards; }
-.flower--8 .flower__line__leaf--4 { animation: blooming-leaf-left var(--fl-speed) 3.6s backwards; }
 
 .flower__leafs {
   position: relative;
@@ -165,10 +145,7 @@ body {
 .flower__leafs--4 { animation-delay: 2.0s; }
 .flower__leafs--5 { animation-delay: 2.3s; }
 .flower__leafs--6 { animation-delay: 2.6s; }
-.flower__leafs--7 { animation-delay: 2.9s; }
-.flower__leafs--8 { animation-delay: 3.2s; }
 /* 🌸 END: โค้ดที่รื้อใหม่ทั้งหมด 🌸 */
-
 
 .flower__leafs::after {
   content: "";
@@ -282,7 +259,6 @@ body {
   transform-origin: right;
   transform: rotate(-70deg) rotateY(30deg) scale(0.6);
 }
-
 .flower__light {
   position: absolute;
   bottom: 0vmin;
@@ -1093,7 +1069,7 @@ body:not(.not-loaded) #start-prompt {
 /* --- สไตล์สำหรับหัวใจที่เกิดตามเมาส์ --- */
 .cursor-heart {
   position: fixed;
-  z-index: 4;
+  z-index: 1;
   opacity: 0.7;
   pointer-events: none;
   transform: translate(-50%, -50%);
@@ -1149,5 +1125,4 @@ body:not(.not-loaded) #start-prompt {
     transform: translateY(-150px) scale(0) rotate(90deg);
     opacity: 0;
   }
-
 }
