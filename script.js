@@ -6,7 +6,7 @@ const SPECIAL_IMAGE_URLS = [
     'https://uwuxp.github.io/Flower4U/secret_2.png', 
     'https://uwuxp.github.io/Flower4U/secret_3.png'
 ];
-const SPAWN_CHANCE = 0.8; // 0.1 = 10% (โอกาส 1 ใน 10)
+const SPAWN_CHANCE = 0.44; // 0.1 = 10% (โอกาส 1 ใน 10)
 
 // 💡 2. ฟังก์ชันสร้าง "หัวใจพื้นหลัง" (แบบสุ่ม)
 function createRandomHeart() {
@@ -128,4 +128,5 @@ function startExperience() {
 // 💡 7. รอการคลิกครั้งแรกเพื่อเริ่มทุกอย่าง
 document.body.addEventListener('click', startExperience);
 document.body.addEventListener('touchstart', startExperience);
+
 
