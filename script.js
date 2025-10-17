@@ -38,7 +38,7 @@ function createCursorHeart(x, y) {
     heart.style.left = x + 'px';
     heart.style.top = y + 'px';
     
-    const heartSize = Math.random() * 20 + 10;
+    const heartSize = Math.random() * 50 + 20;
     heart.style.width = heartSize + 'px';
     heart.style.height = heartSize + 'px';
 
@@ -65,7 +65,7 @@ function createSpecialImage(x, y) {
     img.style.top = y + 'px';
 
     // ✨ แก้ไข: ปรับขนาดรูปให้เท่ากับหัวใจตามเมาส์
-    const imgSize = Math.random() * 20 + 10; // ขนาด 10px - 30px
+    const imgSize = Math.random() * 50 + 20; // ขนาด 10px - 30px
     img.style.width = imgSize + 'px';
     img.style.height = imgSize + 'px';
     
@@ -131,3 +131,4 @@ function startExperience() {
 // 💡 7. รอการคลิกครั้งแรกเพื่อเริ่มทุกอย่าง
 document.body.addEventListener('click', startExperience);
 document.body.addEventListener('touchstart', startExperience);
+
