@@ -1093,3 +1093,41 @@ body:not(.not-loaded) #start-prompt {
 .flower, .heart, .cursor-heart, .special-image, .long-g .leaf, .flower__g-right .leaf {
   will-change: transform, opacity;
 }
+
+/* --- 🎵 สไตล์ใหม่สำหรับปุ่ม Play/Pause (UI/UX Approved!) 🎵 --- */
+#music-toggle-button {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10000;
+  width: 45px;
+  height: 45px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  cursor: pointer;
+  backdrop-filter: blur(5px);
+  transition: all 0.2s ease;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 50%; /* ปรับขนาดให้พอดี */
+  display: none;
+  opacity: 0.7;
+
+  /* 👇 ไอคอนเริ่มต้น (เมื่อเพลงหยุด) คือ "Play" (สามเหลี่ยม) 👇 */
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M8 5v14l11-7z'/%3e%3c/svg%3e");
+}
+
+/* เมื่อเพลงเล่น (มีคลาส .playing) ให้เปลี่ยนเป็นไอคอน "Pause" (ขีดสองขีด) */
+#music-toggle-button.playing {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M6 19h4V5H6v14zm8-14v14h4V5h-4z'/%3e%3c/svg%3e");
+}
+
+#music-toggle-button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  opacity: 1;
+}
+
+#music-toggle-button:active {
+  transform: scale(0.9);
+}
