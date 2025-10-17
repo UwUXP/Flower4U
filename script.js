@@ -4,7 +4,9 @@
 const SPECIAL_IMAGE_URLS = [
     'https://uwuxp.github.io/Flower4U/secret_1.png', 
     'https://uwuxp.github.io/Flower4U/secret_2.png', 
-    'https://uwuxp.github.io/Flower4U/secret_3.png'
+    'https://uwuxp.github.io/Flower4U/secret_3.png',
+    'https://uwuxp.github.io/Flower4U/secret_4.png',
+    'https://uwuxp.github.io/Flower4U/secret_5.png'
 ];
 const SPAWN_CHANCE = 0.4;
 
@@ -131,4 +133,5 @@ function startExperience() {
 // 💡 7. รอการคลิกครั้งแรกเพื่อเริ่มทุกอย่าง
 document.body.addEventListener('click', startExperience);
 document.body.addEventListener('touchstart', startExperience);
+
 
