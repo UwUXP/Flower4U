@@ -22,7 +22,6 @@
   --long-grass-color: #1aaa15; /* Original Long Grass Color */
 }
 
-/* 👇 แก้ปัญหาจอเกินแบบถอนรากถอนโคน 👇 */
 html, body {
   overflow: hidden;
 }
@@ -48,11 +47,22 @@ body {
   z-index: -1;
 }
 
+/* 🚩🚩🚩 แก้ไขจุดที่ 1: จัดกอดอกไม้ให้อยู่ตรงกลางจอหลัก 🚩🚩🚩 */
 .flowers {
-  position: relative;
-  transform: scale(0.7);
+  position: relative; /* ใช้ relative ให้เป็น Parent สำหรับพุ่มไม้ */
+  transform: scale(0.7); /* Scale รวมดอกไม้ทั้งหมด */
   z-index: 2;
+  /* การจัดกลางโดยใช้ flexbox ของ body */
+  display: flex; /* ทำให้ดอกไม้ภายใน flex ได้ */
+  justify-content: center; /* จัดกลางแนวนอน */
+  align-items: flex-end; /* ชิดล่าง */
+  width: 100%; /* ให้เต็มความกว้างเพื่อจัดกลางได้ */
+  height: 100%; /* ให้เต็มความสูงเพื่อจัดกลางได้ */
+  max-width: 100vw; /* ให้ไม่เกินขอบจอ */
+  max-height: 100vh; /* ให้ไม่เกินขอบจอ */
+  box-sizing: border-box; /* สำคัญ: รวม padding/border ใน width/height */
 }
+
 
 .flower {
   position: absolute;
@@ -277,26 +287,28 @@ body {
   left: -6vmin;
   animation-delay: 3.5s;
 }
+
+/* 🚩🚩🚩 แก้ไขจุดที่ 2: พุ่มไม้ทุกกอให้อิงกับ .flowers 🚩🚩🚩 */
 .flower__grass {
   --c: var(--grass-color);
   --line-w: 1.5vmin;
-  position: absolute;
+  position: absolute; /* เปลี่ยนจาก absolute ที่อิง body เป็น absolute ที่อิง .flowers */
   bottom: 12vmin;
-  left: -7vmin;
+  left: 50%; /* จัดกึ่งกลางแนวนอนของ .flowers */
+  transform: translateX(-50%) rotate(-48deg) rotateY(40deg); /* ย้ายเองและหมุน */
   display: flex;
   flex-direction: column;
   align-items: flex-end;
   z-index: 20;
   transform-origin: bottom center;
-  transform: rotate(-48deg) rotateY(40deg);
 }
 .flower__grass--1 {
   animation: moving-grass 2s linear infinite;
 }
 .flower__grass--2 {
-  left: 2vmin;
+  left: 50%; /* จัดกึ่งกลางแนวนอนของ .flowers */
   bottom: 10vmin;
-  transform: scale(0.5) rotate(75deg) rotateX(10deg) rotateY(-200deg);
+  transform: translateX(-50%) scale(0.5) rotate(75deg) rotateX(10deg) rotateY(-200deg); /* ย้ายเองและหมุน */
   opacity: 0.8;
   z-index: 0;
   animation: moving-grass--2 1.5s linear infinite;
@@ -443,11 +455,10 @@ body {
   --w: 2vmin;
   --h: 6vmin;
   --c: var(--grass-color);
-  position: absolute;
+  position: absolute; /* อิง .flowers */
   bottom: 10vmin;
-  left: -3vmin;
-  transform-origin: bottom center;
-  transform: rotate(-30deg) rotateY(-20deg);
+  left: 50%; /* จัดกึ่งกลางแนวนอนของ .flowers */
+  transform: translateX(-50%) rotate(-30deg) rotateY(-20deg); /* ย้ายเองและหมุน */
   display: flex;
   flex-direction: column;
   align-items: flex-end;
@@ -478,11 +489,11 @@ body {
   clip-path: polygon(35% 0, 65% 1%, 100% 100%, 0% 100%);
 }
 .flower__g-right {
-  position: absolute;
+  position: absolute; /* อิง .flowers */
   bottom: 6vmin;
-  left: -2vmin;
+  left: 50%; /* จัดกึ่งกลางแนวนอนของ .flowers */
+  transform: translateX(-50%) rotate(20deg); /* ย้ายเองและหมุน */
   transform-origin: bottom left;
-  transform: rotate(20deg);
 }
 .flower__g-right .leaf {
   width: 30vmin;
@@ -496,8 +507,8 @@ body {
   animation: flower-g-right-ans 2.5s linear infinite;
 }
 .flower__g-right--2 {
-  left: 5vmin;
-  transform: rotateY(-180deg);
+  left: 50%; /* จัดกึ่งกลางแนวนอนของ .flowers */
+  transform: translateX(-50%) rotateY(-180deg); /* ย้ายเองและหมุน */
   animation: flower-g-right-ans--2 3s linear infinite;
 }
 .flower__g-right--2 .leaf {
@@ -522,12 +533,12 @@ body {
   }
 }
 .flower__g-front {
-  position: absolute;
+  position: absolute; /* อิง .flowers */
   bottom: 6vmin;
-  left: 2.5vmin;
+  left: 50%; /* จัดกึ่งกลางแนวนอนของ .flowers */
+  transform: translateX(-50%) rotate(-28deg) rotateY(30deg) scale(1.04); /* ย้ายเองและหมุน */
   z-index: 100;
   transform-origin: bottom center;
-  transform: rotate(-28deg) rotateY(30deg) scale(1.04);
   animation: flower__g-front-ans 2s linear infinite;
 }
 @keyframes flower__g-front-ans {
@@ -627,9 +638,10 @@ body {
   mask-image: linear-gradient(to bottom right, var(--stem-color-light) 50%, transparent 50%, transparent);
 }
 .flower__g-fr {
-  position: absolute;
+  position: absolute; /* อิง .flowers */
   bottom: -4vmin;
-  left: vmin;
+  left: 50%; /* จัดกึ่งกลางแนวนอนของ .flowers */
+  transform: translateX(-50%) rotate(2deg); /* ย้ายเองและหมุน */
   transform-origin: bottom left;
   z-index: 10;
   animation: flower__g-fr-ans 2s linear infinite;
@@ -740,9 +752,10 @@ body {
   }
 }
 .long-g {
-  position: absolute;
+  position: absolute; /* อิง .flowers */
   bottom: 25vmin;
-  left: -42vmin;
+  left: 50%; /* จัดกึ่งกลางแนวนอนของ .flowers */
+  transform: translateX(-50%) rotate(-5deg); /* ย้ายเองและหมุน */
   transform-origin: bottom left;
 }
 .long-g--1 {
@@ -760,9 +773,9 @@ body {
 }
 .long-g--2, .long-g--3 {
   bottom: -3vmin;
-  left: -35vmin;
+  left: 50%; /* จัดกึ่งกลางแนวนอนของ .flowers */
+  transform: translateX(-50%) scale(0.6) rotateX(60deg); /* ย้ายเองและหมุน */
   transform-origin: center;
-  transform: scale(0.6) rotateX(60deg);
 }
 .long-g--2 .leaf, .long-g--3 .leaf {
   mask-image: linear-gradient(to top, transparent 50%, #079097 80%) !important;
@@ -772,41 +785,43 @@ body {
   transform: rotateY(-180deg);
 }
 .long-g--3 {
-  left: -17vmin;
+  left: 50%; /* จัดกึ่งกลางแนวนอนของ .flowers */
   bottom: 0vmin;
+  transform: translateX(-50%) scale(0.6) rotateX(60deg); /* ย้ายเองและหมุน */
 }
 .long-g--3 .leaf {
   mask-image: linear-gradient(to top, transparent 40%, #079097 80%) !important;
 }
 .long-g--4 {
-  left: 25vmin;
+  left: 50%; /* จัดกึ่งกลางแนวนอนของ .flowers */
   bottom: -3vmin;
+  transform: translateX(-50%) scale(0.6) rotateX(60deg); /* ย้ายเองและหมุน */
   transform-origin: center;
-  transform: scale(0.6) rotateX(60deg);
 }
 .long-g--4 .leaf {
   mask-image: linear-gradient(to top, transparent 50%, #079097 80%) !important;
 }
 .long-g--5 {
-  left: 42vmin;
+  left: 50%; /* จัดกึ่งกลางแนวนอนของ .flowers */
   bottom: 0vmin;
-  transform: scale(0.8) rotate(2deg);
+  transform: translateX(-50%) scale(0.8) rotate(2deg); /* ย้ายเองและหมุน */
 }
 .long-g--6 {
-  left: 0vmin;
+  left: 50%; /* จัดกึ่งกลางแนวนอนของ .flowers */
   bottom: -20vmin;
   z-index: 100;
   filter: blur(0.3vmin);
-  transform: scale(0.8) rotate(2deg);
+  transform: translateX(-50%) scale(0.8) rotate(2deg); /* ย้ายเองและหมุน */
 }
 .long-g--7 {
-  left: 35vmin;
+  left: 50%; /* จัดกึ่งกลางแนวนอนของ .flowers */
   bottom: 20vmin;
   z-index: -1;
   filter: blur(0.3vmin);
-  transform: scale(0.6) rotate(2deg);
+  transform: translateX(-50%) scale(0.6) rotate(2deg); /* ย้ายเองและหมุน */
   opacity: 0.7;
 }
+
 .long-g .leaf {
   --w: 15vmin;
   --h: 40vmin;
@@ -873,6 +888,7 @@ body {
 }
 .grow-ans {
   animation: grow-ans 2s var(--d) backwards;
+  transform-origin: bottom;
 }
 @keyframes grow-ans {
   0% {
@@ -979,7 +995,6 @@ body {
   animation-play-state: paused !important;
 }
 
-/* --- สไตล์สำหรับข้อความเริ่มต้น --- */
 #start-prompt {
   position: fixed;
   top: 50%;
@@ -1000,18 +1015,13 @@ body:not(.not-loaded) #start-prompt {
   pointer-events: none;
 }
 
-/* --- ✨✨✨ START: โค้ดที่แก้ไขปัญหาหัวใจทับรูป ✨✨✨ --- */
-
-/* 1. คลาส .heart ตอนนี้จะทำหน้าที่แค่ "กำหนดพฤติกรรมการลอย" เท่านั้น */
 .heart {
   position: fixed;
   z-index: 1;
   opacity: 0.5;
-  animation: floatUp linear forwards; /* เรียกใช้อนิเมชันลอยขึ้นสูง */
+  animation: floatUp linear forwards;
   pointer-events: none;
 }
-
-/* 2. เราสร้างคลาสใหม่ .heart-shape เพื่อทำหน้าที่ "วาดรูปหัวใจ" โดยเฉพาะ */
 .heart-shape::before,
 .heart-shape::after {
   content: '';
@@ -1032,15 +1042,16 @@ body:not(.not-loaded) #start-prompt {
   transform: rotate(45deg);
   transform-origin: 100% 100%;
 }
-
-/* 3. อนิเมชันลอยขึ้นสูง ยังอยู่เหมือนเดิม */
 @keyframes floatUp {
-  0% { transform: translateY(0); opacity: 0.5; }
-  100% { transform: translateY(-100vh); opacity: 0; }
+  0% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  100% {
+    transform: translateY(-100vh);
+    opacity: 0;
+  }
 }
-
-/* --- ✨✨✨ END: โค้ดที่แก้ไขปัญหาหัวใจทับรูป ✨✨✨ --- */
-
 
 .cursor-heart {
   position: fixed;
@@ -1071,8 +1082,14 @@ body:not(.not-loaded) #start-prompt {
   transform-origin: 100% 100%;
 }
 @keyframes cursorHeart {
-  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
-  100% { transform: translate(-50%, -150%) scale(0); opacity: 0; }
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: translate(-50%, -150%) scale(0);
+    opacity: 0;
+  }
 }
 
 .special-image {
@@ -1082,52 +1099,137 @@ body:not(.not-loaded) #start-prompt {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  /* เราจะให้ JS กำหนด animation เอง เพื่อความยืดหยุ่น */
 }
 @keyframes specialImageFloat {
-  0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
-  100% { transform: translateY(-150px) scale(0) rotate(90deg); opacity: 0; }
+  0% {
+    transform: translateY(0) scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-150px) scale(0) rotate(90deg);
+    opacity: 0;
+  }
 }
 
-/* 👈 เพิ่มโค้ดเร่งความเร็ว (Performance Boost) 👈 */
 .flower, .heart, .cursor-heart, .special-image, .long-g .leaf, .flower__g-right .leaf {
   will-change: transform, opacity;
 }
 
-/* --- 🎵 สไตล์ใหม่สำหรับปุ่ม Play/Pause (UI/UX Approved!) 🎵 --- */
-#music-toggle-button {
+/* --- 🎵 สไตล์ใหม่สำหรับ Playlist Pop-up 🎵 --- */
+#music-controls {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 10000;
-  width: 45px;
-  height: 45px;
-  background-color: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  cursor: pointer;
-  backdrop-filter: blur(5px);
-  transition: all 0.2s ease;
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: 50%; /* ปรับขนาดให้พอดี */
   display: none;
-  opacity: 0.7;
-
-  /* 👇 ไอคอนเริ่มต้น (เมื่อเพลงหยุด) คือ "Play" (สามเหลี่ยม) 👇 */
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M8 5v14l11-7z'/%3e%3c/svg%3e");
+  align-items: center;
+  gap: 15px;
+  padding: 10px 20px;
+  background-color: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50px;
+  backdrop-filter: blur(8px);
+  position: relative;
 }
 
-/* เมื่อเพลงเล่น (มีคลาส .playing) ให้เปลี่ยนเป็นไอคอน "Pause" (ขีดสองขีด) */
-#music-toggle-button.playing {
-  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M6 19h4V5H6v14zm8-14v14h4V5h-4z'/%3e%3c/svg%3e");
+/* 🚩🚩🚩 แก้ไขจุดที่ 3: เพิ่มลูกศรและปรับปรุงปุ่ม Pop-up 🚩🚩🚩 */
+#song-info-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 8px 15px; /* เพิ่มพื้นที่กด */
+  border-radius: 20px;
+  transition: background-color 0.2s ease;
+  position: relative;
+  min-width: 180px;
+}
+#song-info-wrapper:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+#song-info {
+  color: white;
+  font-family: sans-serif;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: 20px; /* เว้นที่ให้ลูกศร */
+}
+#song-info-wrapper::after {
+  content: '▼'; /* ใช้ตัวอักษรลูกศรแทน SVG เพื่อความง่าย */
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.7);
+  position: absolute;
+  right: 15px;
+  transition: transform 0.3s ease;
+}
+/* เมื่อ Pop-up เปิด ให้ลูกศรหมุน */
+#music-controls:has(#playlist-popup.active) #song-info-wrapper::after {
+  transform: rotate(180deg);
 }
 
-#music-toggle-button:hover {
-  background-color: rgba(255, 255, 255, 0.2);
+#prev-button, #next-button, #music-toggle-button {
+  width: 45px; height: 45px; border-radius: 50%; cursor: pointer;
+  transition: all 0.2s ease; background-repeat: no-repeat;
+  background-position: center; background-size: 40%;
+  opacity: 0.8; background-color: rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
+}
+#prev-button:hover, #next-button:hover, #music-toggle-button:hover {
+  background-color: rgba(255, 255, 255, 0.2); opacity: 1;
+}
+#prev-button:active, #next-button:active, #music-toggle-button:active { transform: scale(0.9); }
+
+#prev-button { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M6 6h2v12H6zm3.5 6l8.5 6V6z'/%3e%3c/svg%3e"); }
+#next-button { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M16 6h2v12h-2zm-4.5 6l-8.5 6V6z'/%3e%3c/svg%3e"); }
+#music-toggle-button { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M8 5v14l11-7z'/%3e%3c/svg%3e"); background-size: 45%; background-position: 55% center; }
+#music-toggle-button.playing { background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3e%3cpath d='M6 19h4V5H6v14zm8-14v14h4V5h-4z'/%3e%3c/svg%3e"); background-size: 40%; background-position: center; }
+
+#playlist-popup {
+  position: absolute;
+  bottom: 120%;
+  left: 50%;
+  transform: translateX(-50%) translateY(10px);
+  width: 300px;
+  background-color: rgba(30, 30, 30, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  padding: 10px;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+#playlist-popup.active {
   opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
 }
-
-#music-toggle-button:active {
-  transform: scale(0.9);
+#playlist-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 200px;
+  overflow-y: auto;
+}
+#playlist-list li {
+  color: rgba(255, 255, 255, 0.7);
+  padding: 12px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#playlist-list li:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+#playlist-list li.current-song {
+  color: var(--main-pink);
+  font-weight: bold;
 }
