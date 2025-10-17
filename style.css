@@ -22,13 +22,17 @@
   --long-grass-color: #1aaa15; /* Original Long Grass Color */
 }
 
+/* 👇 แก้ปัญหาจอเกินแบบถอนรากถอนโคน 👇 */
+html, body {
+  overflow: hidden;
+}
+
 body {
   display: flex;
   align-items: flex-end;
   justify-content: center;
   min-height: 100vh;
   background-color: var(--dark-color);
-  overflow-x: hidden; /* 👈 แก้ปัญหาจอเกินบนมือถือ */
   perspective: 1000px;
 }
 
@@ -52,47 +56,20 @@ body {
 
 .flower {
   position: absolute;
-  bottom: 10vmin;
+  bottom: 15vmin;
   transform-origin: bottom center;
   z-index: 10;
   --fl-speed: 0.8s;
 }
 
-/* 🌸 START: โค้ดที่รื้อใหม่ทั้งหมดสำหรับ 6 ดอก 🌸 */
-/* --- การจัดตำแหน่งและอนิเมชันของดอกไม้แต่ละดอก --- */
-.flower--1 { /* กลางหลัง สูงสุด */
-  left: 48%; 
-  transform: rotate(-2deg);
-  animation: moving-flower-1 5s linear infinite;
-}
-.flower--2 { /* ขวา กลาง */
-  left: 65%; 
-  transform: rotate(10deg);
-  animation: moving-flower-2 4s linear infinite;
-}
-.flower--3 { /* ซ้าย กลาง */
-  left: 30%;
-  transform: rotate(-10deg);
-  animation: moving-flower-3 4.5s linear infinite;
-}
-.flower--4 { /* ซ้ายสุด หน้า */
-  right: 68%;
-  transform: rotate(-20deg);
-  animation: moving-flower-1 5.5s linear infinite;
-}
-.flower--5 { /* ขวาสุด หน้า */
-  left: 78%;
-  transform: rotate(25deg);
-  animation: moving-flower-2 6s linear infinite;
-}
-.flower--6 { /* กลางหน้า เตี้ยสุด */
-  left: 45%;
-  transform: rotate(5deg);
-  animation: moving-flower-3 3.8s linear infinite;
-}
+/* 🌸 โค้ดจัดช่อดอกไม้ 6 ดอก 🌸 */
+.flower--1 { left: 48%; transform: rotate(-2deg); animation: moving-flower-1 5s linear infinite; }
+.flower--2 { left: 65%; transform: rotate(10deg); animation: moving-flower-2 4s linear infinite; }
+.flower--3 { left: 30%; transform: rotate(-10deg); animation: moving-flower-3 4.5s linear infinite; }
+.flower--4 { right: 68%; transform: rotate(-20deg); animation: moving-flower-1 5.5s linear infinite; }
+.flower--5 { left: 78%; transform: rotate(25deg); animation: moving-flower-2 6s linear infinite; }
+.flower--6 { left: 45%; transform: rotate(5deg); animation: moving-flower-3 3.8s linear infinite; }
 
-
-/* --- การตั้งค่าความสูงและเวลาเกิดของ "ก้าน" --- */
 .flower--1 .flower__line { height: 70vmin; animation-delay: 0.2s; }
 .flower--2 .flower__line { height: 60vmin; animation-delay: 0.8s; }
 .flower--3 .flower__line { height: 62vmin; animation-delay: 0.5s; }
@@ -100,12 +77,12 @@ body {
 .flower--5 .flower__line { height: 50vmin; animation-delay: 0.4s; }
 .flower--6 .flower__line { height: 45vmin; animation-delay: 1.0s; }
 
-
-/* --- การตั้งค่าเวลาบานของ "ใบ" ที่ติดก้าน --- */
 .flower--1 .flower__line__leaf--1 { animation: blooming-leaf-right var(--fl-speed) 1.6s backwards; }
 .flower--1 .flower__line__leaf--2 { animation: blooming-leaf-right var(--fl-speed) 1.4s backwards; }
 .flower--1 .flower__line__leaf--3 { animation: blooming-leaf-left var(--fl-speed) 1.2s backwards; }
 .flower--1 .flower__line__leaf--4 { animation: blooming-leaf-left var(--fl-speed) 1.0s backwards; }
+.flower--1 .flower__line__leaf--5 { animation: blooming-leaf-right var(--fl-speed) 1.8s backwards; }
+.flower--1 .flower__line__leaf--6 { animation: blooming-leaf-left var(--fl-speed) 2.0s backwards; }
 
 .flower--2 .flower__line__leaf--1 { animation: blooming-leaf-right var(--fl-speed) 1.9s backwards; }
 .flower--2 .flower__line__leaf--2 { animation: blooming-leaf-right var(--fl-speed) 1.7s backwards; }
@@ -132,20 +109,16 @@ body {
 .flower--6 .flower__line__leaf--3 { animation: blooming-leaf-left var(--fl-speed) 2.6s backwards; }
 .flower--6 .flower__line__leaf--4 { animation: blooming-leaf-left var(--fl-speed) 2.8s backwards; }
 
-
 .flower__leafs {
   position: relative;
   animation: blooming-flower 2s backwards;
 }
-
-/* --- การตั้งค่าเวลาบานของ "กลีบดอกไม้" --- */
 .flower__leafs--1 { animation-delay: 1.1s; }
 .flower__leafs--2 { animation-delay: 1.4s; }
 .flower__leafs--3 { animation-delay: 1.7s; }
 .flower__leafs--4 { animation-delay: 2.0s; }
 .flower__leafs--5 { animation-delay: 2.3s; }
 .flower__leafs--6 { animation-delay: 2.6s; }
-/* 🌸 END: โค้ดที่รื้อใหม่ทั้งหมด 🌸 */
 
 .flower__leafs::after {
   content: "";
@@ -1027,16 +1000,20 @@ body:not(.not-loaded) #start-prompt {
   pointer-events: none;
 }
 
-/* --- สไตล์สำหรับหัวใจพื้นหลัง (Heart Effect Styles) --- */
+/* --- ✨✨✨ START: โค้ดที่แก้ไขปัญหาหัวใจทับรูป ✨✨✨ --- */
+
+/* 1. คลาส .heart ตอนนี้จะทำหน้าที่แค่ "กำหนดพฤติกรรมการลอย" เท่านั้น */
 .heart {
   position: fixed;
   z-index: 1;
   opacity: 0.5;
-  animation: floatUp linear forwards;
+  animation: floatUp linear forwards; /* เรียกใช้อนิเมชันลอยขึ้นสูง */
   pointer-events: none;
 }
-.heart::before,
-.heart::after {
+
+/* 2. เราสร้างคลาสใหม่ .heart-shape เพื่อทำหน้าที่ "วาดรูปหัวใจ" โดยเฉพาะ */
+.heart-shape::before,
+.heart-shape::after {
   content: '';
   position: absolute;
   top: 0;
@@ -1045,28 +1022,26 @@ body:not(.not-loaded) #start-prompt {
   background: var(--main-pink);
   border-radius: 50px 50px 0 0;
 }
-.heart::before {
+.heart-shape::before {
   left: 50%;
   transform: rotate(-45deg);
   transform-origin: 0 100%;
 }
-.heart::after {
+.heart-shape::after {
   left: 0;
   transform: rotate(45deg);
   transform-origin: 100% 100%;
 }
+
+/* 3. อนิเมชันลอยขึ้นสูง ยังอยู่เหมือนเดิม */
 @keyframes floatUp {
-  0% {
-    transform: translateY(0);
-    opacity: 0.5;
-  }
-  100% {
-    transform: translateY(-100vh);
-    opacity: 0;
-  }
+  0% { transform: translateY(0); opacity: 0.5; }
+  100% { transform: translateY(-100vh); opacity: 0; }
 }
 
-/* --- สไตล์สำหรับหัวใจที่เกิดตามเมาส์ --- */
+/* --- ✨✨✨ END: โค้ดที่แก้ไขปัญหาหัวใจทับรูป ✨✨✨ --- */
+
+
 .cursor-heart {
   position: fixed;
   z-index: 1;
@@ -1096,17 +1071,10 @@ body:not(.not-loaded) #start-prompt {
   transform-origin: 100% 100%;
 }
 @keyframes cursorHeart {
-  0% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 0.7;
-  }
-  100% {
-    transform: translate(-50%, -150%) scale(0);
-    opacity: 0;
-  }
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+  100% { transform: translate(-50%, -150%) scale(0); opacity: 0; }
 }
 
-/* --- สไตล์สำหรับรูปภาพพิเศษ --- */
 .special-image {
   position: fixed;
   z-index: 1;
@@ -1114,15 +1082,14 @@ body:not(.not-loaded) #start-prompt {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  animation: specialImageFloat 1.5s ease-out forwards;
+  /* เราจะให้ JS กำหนด animation เอง เพื่อความยืดหยุ่น */
 }
 @keyframes specialImageFloat {
-  0% {
-    transform: translateY(0) scale(1) rotate(0deg);
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(-150px) scale(0) rotate(90deg);
-    opacity: 0;
-  }
+  0% { transform: translateY(0) scale(1) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(-150px) scale(0) rotate(90deg); opacity: 0; }
+}
+
+/* 👈 เพิ่มโค้ดเร่งความเร็ว (Performance Boost) 👈 */
+.flower, .heart, .cursor-heart, .special-image, .long-g .leaf, .flower__g-right .leaf {
+  will-change: transform, opacity;
 }
