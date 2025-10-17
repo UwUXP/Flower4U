@@ -1,4 +1,4 @@
-// --- ระบบรวม: คลิกเพื่อเริ่ม, สุ่มหัวใจ, หัวใจตามเมาส์, และสุ่มรูปภาพ 3 แบบ (ปรับปรุงประสิทธิภาพแล้ว) ---
+// --- ระบบรวม: แก้ไขปัญหาจอเกิน, หัวใจทับรูป, และขนาดรูปตามเมาส์ ---
 
 // 💡 1. ตั้งค่าหลัก
 const SPECIAL_IMAGE_URLS = [
@@ -6,12 +6,13 @@ const SPECIAL_IMAGE_URLS = [
     'https://uwuxp.github.io/Flower4U/secret_2.png', 
     'https://uwuxp.github.io/Flower4U/secret_3.png'
 ];
-const SPAWN_CHANCE = 0.44; // 0.1 = 10% (โอกาส 1 ใน 10)
+const SPAWN_CHANCE = 0.4;
 
 // 💡 2. ฟังก์ชันสร้าง "หัวใจพื้นหลัง" (แบบสุ่ม)
 function createRandomHeart() {
     const heart = document.createElement('div');
-    heart.classList.add('heart'); 
+    // ✨ แก้ไข: ใส่ 2 คลาส -> .heart (สำหรับอนิเมชัน) และ .heart-shape (สำหรับรูปทรง)
+    heart.classList.add('heart', 'heart-shape'); 
 
     heart.style.left = Math.random() * 100 + 'vw';
     heart.style.top = '100vh';
@@ -30,6 +31,7 @@ function createRandomHeart() {
 
 // 💡 3. ฟังก์ชันสร้าง "หัวใจตามเมาส์/นิ้ว"
 function createCursorHeart(x, y) {
+    // ... ฟังก์ชันนี้สมบูรณ์ดีอยู่แล้ว ไม่ต้องแก้ไข ...
     const heart = document.createElement('div');
     heart.classList.add('cursor-heart'); 
 
@@ -44,7 +46,6 @@ function createCursorHeart(x, y) {
     heart.style.animationDuration = animationDuration + 's';
 
     document.body.appendChild(heart);
-
     heart.addEventListener('animationend', () => heart.remove());
 }
 
@@ -56,26 +57,28 @@ function createSpecialImage(x, y) {
     const img = document.createElement('div');
     img.classList.add('special-image');
     img.style.backgroundImage = `url(${randomImageUrl})`;
+    
+    // ✨ แก้ไข: กำหนดอนิเมชันให้รูปที่ตามเมาส์โดยตรง
+    img.style.animation = 'specialImageFloat 1.5s ease-out forwards';
 
     img.style.left = x + 'px';
     img.style.top = y + 'px';
 
-    const imgSize = Math.random() * 40 + 40;
+    // ✨ แก้ไข: ปรับขนาดรูปให้เท่ากับหัวใจตามเมาส์
+    const imgSize = Math.random() * 20 + 10; // ขนาด 10px - 30px
     img.style.width = imgSize + 'px';
     img.style.height = imgSize + 'px';
     
     document.body.appendChild(img);
-    
     img.addEventListener('animationend', () => img.remove());
 }
 
-// 💡 5. Throttling: สำหรับหัวใจ/รูปภาพที่ตามเมาส์ (ปรับปรุงประสิทธิภาพ)
+// 💡 5. Throttling (ปรับปรุงประสิทธิภาพ)
 let isThrottled = false;
 function handlePointerMove(e) {
     if (isThrottled) return;
     isThrottled = true;
-    // 👇 แก้ไขจุดที่ 1: เพิ่มค่าหน่วงเวลาจาก 50 เป็น 100 👇
-    setTimeout(() => { isThrottled = false; }, 100);
+    setTimeout(() => { isThrottled = false; }, 100); // หน่วงเวลา 0.1 วินาที
 
     const x = e.touches ? e.touches[0].clientX : e.clientX;
     const y = e.touches ? e.touches[0].clientY : e.clientY;
@@ -92,10 +95,11 @@ function startExperience() {
     document.body.classList.remove("not-loaded");
 
     // สำหรับหัวใจ/รูปภาพพื้นหลัง (ปรับปรุงประสิทธิภาพ)
-    // 👇 แก้ไขจุดที่ 2: เพิ่มค่า Interval จาก 500 เป็น 800 👇
     setInterval(() => {
         if (Math.random() < SPAWN_CHANCE) {
+            // ✨ แก้ไข: สร้างรูปพิเศษสำหรับพื้นหลัง
             const img = document.createElement('div');
+            // 👈 ใส่คลาส .special-image (สำหรับรูป) และ .heart (สำหรับอนิเมชันลอยสูง)
             img.classList.add('special-image', 'heart'); 
 
             const randomIndex = Math.floor(Math.random() * SPECIAL_IMAGE_URLS.length);
@@ -110,11 +114,10 @@ function startExperience() {
 
             document.body.appendChild(img);
             img.addEventListener('animationend', () => img.remove());
-
         } else {
             createRandomHeart();
         }
-    }, 800);
+    }, 800); // ความถี่ 0.8 วินาที
 
     // เริ่มระบบติดตามเมาส์/นิ้ว
     document.addEventListener('mousemove', handlePointerMove);
@@ -128,5 +131,3 @@ function startExperience() {
 // 💡 7. รอการคลิกครั้งแรกเพื่อเริ่มทุกอย่าง
 document.body.addEventListener('click', startExperience);
 document.body.addEventListener('touchstart', startExperience);
-
-
